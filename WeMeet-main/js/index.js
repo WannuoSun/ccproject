@@ -172,6 +172,8 @@ function doCreateMeeting(c_duration,c_host,c_location,c_description,c_participan
             // error callback
             console.log(result);
         });
+    alert("Creation Succeed!");
+    window.location.href="meeting.html";
 }
 
 function onload_test(){
