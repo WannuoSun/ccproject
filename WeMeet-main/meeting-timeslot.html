@@ -46,7 +46,7 @@
      <script type="text/javascript" src="js/apiGateway-js-sdk/apigClient.js"></script>
      <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.0.min.js"></script>
 </head>
-<body>
+<body onload="doRecommendTimeSlot()">
 
     <!-- Preloader -->
     <div id="preloader">
@@ -111,19 +111,21 @@
         <div class="row">
             <center>
             <div class="col-md-12">
-            <h3 class="text-uppercase">For meeting xxx</h3>
-                <h5>Host: </h5>
-                <p>Meeting Descripton:  </p>
+            <h3 class="text-uppercase" id="meeting-title">For meeting xxx</h3>
+                <h5 id="meeting-title-host">Host: </h5>
+                <!-- <p>Meeting Descripton:  </p> -->
             </div>
             </center>
         </div>
 
 
         <div class="row">
-            <div class="col-md-6">
-                <h3> Recommended timeslots</h3>
-                <div class="people-nearby">
-                    <form class="form">
+            <center>
+            <div class="col-md-12">
+                <h4> Recommended timeslots</h3>
+                <div class="people-nearby timeslot-container">
+                    <div class="timeslot-content" id="timeslot-content">
+                    <!-- <form class="form">
                         <div class="inputGroup">
                           <input id="option1" name="May 25, 2022, 10 AM" type="checkbox"/>
                           <label for="option1">May 25, 2022, 10 AM</label>
@@ -154,6 +156,26 @@
                             <label for="option6">May 25, 2022, 3 PM</label>
                         </div>
 
+                        <div class="inputGroup">
+                            <input id="option6" name="May 25, 2022, 3 PM" type="checkbox"/>
+                            <label for="option6">May 25, 2022, 3 PM</label>
+                        </div>
+
+                        <div class="inputGroup">
+                            <input id="option6" name="May 25, 2022, 3 PM" type="checkbox"/>
+                            <label for="option6">May 25, 2022, 3 PM</label>
+                        </div>
+
+                        <div class="inputGroup">
+                            <input id="option6" name="May 25, 2022, 3 PM" type="checkbox"/>
+                            <label for="option6">May 25, 2022, 3 PM</label>
+                        </div>
+
+                        <div class="inputGroup">
+                            <input id="option6" name="May 25, 2022, 3 PM" type="checkbox"/>
+                            <label for="option6">May 25, 2022, 3 PM</label>
+                        </div>
+
 
 
                         <div class="col-md-12">
@@ -161,18 +183,19 @@
                             <button>More recommendations</button>
                         </div>
 
-                    </form>
+                    </form> -->
+                    </div>
 
                 </div>
             </div>
-
+            </center>
             
         </div>
 
         <div class="row">
             <center>
                 <!-- <div class="col-md-6"> -->
-                    <button class="btn btn-box">Submit</button>
+                    <button class="btn btn-box" onclick="voteMeeting()">Submit</button>
                 <!-- </div> -->
             </center>
         </div>

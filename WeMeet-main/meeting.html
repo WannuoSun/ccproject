@@ -45,7 +45,7 @@
      <script type="text/javascript" src="js/apiGateway-js-sdk/apigClient.js"></script>
      <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.0.min.js"></script>
 </head>
-<body>
+<body onload="findUserMeetings()">
 
     <!-- Preloader -->
     <div id="preloader">
@@ -111,8 +111,9 @@
                     <h3> Upcoming Meetings</h3>
                 </div>
 
-                <div class="people-nearby">
-                  <div class="nearby-user">
+                <div class="people-nearby" id="meeting-info">
+
+                  <!-- <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
                           <h4>Meeting 1</h4>
@@ -135,10 +136,10 @@
                         <a href="meeting-timeslot.html" class="btn btn-box">Choose your available timeslots</a>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
 
-                  <div class="nearby-user">
+                  <!-- <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
                           <h4>Meeting 2</h4>
@@ -161,10 +162,10 @@
                         <a href="meeting-timeslot.html" class="btn btn-box">Choose your available timeslots</a>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
 
-                  <div class="nearby-user">
+                  <!-- <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
                           <h4>Meeting 3</h4>
@@ -188,7 +189,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="title-container">
                     <h3> Settled Meetings (Ready to start)</h3>

@@ -191,6 +191,42 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.getrecommendGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['mID'], ['body']);
+        
+        var getrecommendGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/getrecommend').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['mID']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(getrecommendGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.getrecommendOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var getrecommendOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/getrecommend').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(getrecommendOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.loginstatusGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

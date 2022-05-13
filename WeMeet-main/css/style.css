@@ -1565,6 +1565,10 @@ img.profile-photo-lg{
     color:rgba(0, 0, 0, .8);
 }
 
+.text-blue{
+    color:rgba(0, 55, 144, 0.8);
+}
+
 .text-important{
     color:rgba(255, 89, 0, 0.8);
 }
@@ -1652,3 +1656,20 @@ img.profile-photo-lg{
   .p-bigger{
       font-size: 16px;
   }
+
+.timeslot-container { height: 600px; width: 600px; overflow: scroll; }
+.timeslot-content { height: 1000px; }
+
+div.timeslot-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+div.timeslot-content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+div.timeslot-content::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}

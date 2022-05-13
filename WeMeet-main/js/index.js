@@ -1,3 +1,5 @@
+const today = new Date();
+
 var apigClient = apigClientFactory.newClient({
     region: 'us-east-1', // OPTIONAL: The region where the API is deployed, by default this parameter is set to us-east-1
     apiKey: 'WFY7aanS24uJZxz05XHo4o1wN7zSszFaOGeg7Ok5'
@@ -86,6 +88,14 @@ function doEditProfile(edit_id,edit_name){
         });
 }
 
+function isInt(value) {
+    if (isNaN(value)) {
+      return false;
+    }
+    var x = parseFloat(value);
+    return (x | 0) === x;
+  }
+
 
 function createMeeting(){
     var create_duration=document.getElementById('create_meeting_duration')
@@ -102,6 +112,10 @@ function createMeeting(){
     if (!create_duration.value) {
         alert('Please Enter Duration!');
     } 
+    else if (!isInt(create_duration.value)){
+        console.log(create_duration.value);
+        alert('Duration must be an integer number!');
+    }
     else if (!create_host.value){
         alert('Please Enter Host ID');
     }
@@ -114,6 +128,7 @@ function createMeeting(){
     else if (!create_participants.value){
         alert('Please Enter Meeting Participants');
     }
+    
     else {
         create_duration_value = create_duration.value;
         create_duration.value = "";
@@ -157,37 +172,162 @@ function doCreateMeeting(c_duration,c_host,c_location,c_description,c_participan
         });
 }
 
+function onload_test(){
+    console.log("test onloading");
+}
+
 function findUserMeetings(){
     var user_current_id =  ""; //static variable maybe.
-    doUserLogin(user_current_id);
+    doFindUserMeetings(user_current_id);
     
 };
 
 function doFindUserMeetings(cur_id){
-    var params = {'uID' : user_id};
+    var params = {'uID' : "Moni"};
     console.log(params)
     var body = {};
     var additionalParams = {};
+
+    var res_html = "";
 
     
     apigClient.findusermeetingsGet(params, body, additionalParams)
         .then(function(result) {
             // success callback
-            console.log("Result : ", result);
-            data = result["data"]
-            console.log(data)
+            // console.log("Result : ", result);
+            var data = result["data"];
+            var idx = 1;
+
+            while(data["Meeting"+idx]!=undefined){
+                console.log(data["Meeting"+idx]);
+
+                var info = data["Meeting"+idx];
+                var meet_date =  new Date();
+                meet_date.setDate(today.getDate() + info["current_set_time"][0]);
+                meet_date = meet_date.toISOString().split("T")[0] + " " + info["current_set_time"][1] + ":00";
+
+                console.log(meet_date);
+
+                res_html += 
+                '<div class="nearby-user">'
+                    +'<div class="row">'
+                      +'<div class="col-md-2 col-sm-2">'
+                          +'<h4>Meeting '+idx+'</h4>'
+                      +'</div>'
+                      +'<div class="col-md-7 col-sm-7">'
+                        +'<h5 class="h5-black">Host: <p class="text-muted p-inline text-blue">'+info["host"]+'</p></h5>'
+                        +'<h5 class="h5-black">Participants: <p class="text-muted p-inline text-blue">'+info["participants"]+'</p></h5>' 
+                        +'<h5 class="h5-black">Current Set Time: <p class="text-muted p-inline text-important">'+meet_date+'</p></h5>'
+                        +'<h5 class="h5-black">Vote Status: <p class="text-muted p-inline text-important">'+info["vote_status"]+'</p></h5>'
+                        +'<h5 class="h5-black">Location: <p class="text-muted p-inline text-blue">'+info["location"]+'</p></h5>'
+                        +'<h5 class="h5-black">Description: <p class="text-muted p-inline text-blue">'+info["description"]+'</p></h5>'
+                        
+                      +'</div>'
+                      +'<div class="col-md-3 col-sm-3">'
+                        +'<a href="meeting-timeslot.html?meeting-idx='+idx+'&host='+info["host"]+'" class="btn btn-box">Choose your available timeslots</a>'
+                      +'</div>'
+                    +'</div>'
+                  +'</div>';
+
+                idx++;
+            }
+            var div = document.getElementById("meeting-info");
+            div.innerHTML = res_html;
        
         }).catch(function(result) {
             // error callback
             console.log(result);
         });
+
 }
 
-
 //sample
-function voteMeeting(){
 
-        doVoteMeeting();
+function doRecommendTimeSlot(){
+
+    // var pa = window.location.split('?')[1];
+    // console.log(pa);
+
+    var urlquery = window.location.search;
+    var query = urlquery.split("&")
+    var mID = query[0].split("=")[1]
+    var host = query[1].split("=")[1]
+    console.log(mID, host)
+
+    document.getElementById("meeting-title").innerHTML="For meeting "+mID
+    document.getElementById("meeting-title-host").innerHTML="Host: "+host
+
+    var params = {'mID' : mID};
+    console.log(params)
+    var body = {};
+    var additionalParams = {};
+
+    var res_html = '<form class="form">';
+
+    apigClient.getrecommendGet(params, body, additionalParams)
+    .then(function(result) {
+        // success callback
+        // console.log("Result : ", result);
+        data = result["data"];
+        console.log(data)
+        
+        timeslots = data.slice(1, -1).split(", ");
+        for(var i=0; i<timeslots.length; i++){
+            day = timeslots[i].split(":")[0].slice(1, -1);
+            day = parseInt(day);
+            time = timeslots[i].split(":")[1].slice(2, -1).split(",");
+            
+            if(time != ''){
+                for(var t=0; t<time.length; t++){
+                    var meet_date =  new Date();
+                    meet_date.setDate(today.getDate() + day);
+                    meet_date = meet_date.toISOString().split("T")[0] + " " + time[t] + ":00 (next "+day+" day)";
+                    
+                    var label = day + ":" + time[t]
+                    res_html += 
+                        '<div class="inputGroup">'
+                        +'<input class="checkbox-time" id="option'+label+'" value="'+label+'" type="checkbox"/>'
+                        +'<label for="option'+label+'">'+meet_date+'</label>'
+                        +'</div>'
+                    // console.log(meet_date);
+                }
+            }
+
+        }
+        res_html += '</form>'
+
+        var div = document.getElementById("timeslot-content");
+        div.innerHTML = res_html;
+
+   
+    }).catch(function(result) {
+        // error callback
+        console.log(result);
+    });
+}
+
+function voteMeeting(){
+    console.log("vote meeting!");
+    var urlquery = window.location.search;
+    var query = urlquery.split("&");
+    var uID = "Moni"
+    var mID = query[0].split("=")[1];
+    var day = "";
+    var time = "";
+
+    var checkedTime = document.querySelectorAll('.checkbox-time:checked');
+    for (var i = 0; i < checkedTime.length; i++) {
+        day += checkedTime[i].value.split(":")[0]+",";
+        time += checkedTime[i].value.split(":")[1]+",";
+    }
+    day = day.slice(0, -1);
+    time = time.slice(0, -1);
+
+    console.log(uID)
+    console.log(mID)
+    console.log(day)
+    console.log(time)
+    // doVoteMeeting(uID, mID, day, time);
 }
 
 function doVoteMeeting(a,b,c,d){
