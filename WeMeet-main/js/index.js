@@ -47,7 +47,7 @@ function doUserLogin(user_id,user_password){
             console.log(result);
         });
         localStorage.setItem("ID", user_id);
-        window.location.href="index.html";
+        // window.location.href="index.html";
 }
 
 //要改 晚点改
@@ -182,7 +182,7 @@ function onload_test(){
 
 function calendarSet(){
     const days = [1,2,3,4,5,6,7]
-    const hours = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    const hours = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
     var res_html = ""
     for(var d=0; d<days.length; d++){
         for(var h=0; h<hours.length; h++){
@@ -217,7 +217,7 @@ function saveCalendar(){
     
     console.log(uID, day, time)
     // doSaveCalendar(uID, day, time)
-    window.location.href="about.html";
+    // window.location.href="about.html";
 }
 
 function findUserMeetings(){
@@ -241,7 +241,6 @@ function doFindUserMeetings(cur_id){
             var data = result["data"];
             var idx = 1;
 
-            console.log(data)
             while(data["Meeting"+idx]!=undefined){
                 console.log(data["Meeting"+idx]);
 
@@ -373,9 +372,13 @@ function voteMeeting(){
     day = day.slice(0, -1);
     time = time.slice(0, -1);
 
+    // console.log(uID)
+    // console.log(mID)
+    // console.log(day)
+    // console.log(time)
     console.log(uID, mID, day, time)
     doVoteMeeting(uID, mID, day, time);
-    window.location.href="meeting.html";
+    // window.location.href="meeting.html";
 }
 
 function doVoteMeeting(a,b,c,d){
